@@ -4,11 +4,13 @@ has_many :genres, through: :songs
 
 
 def slug
-    slugified = self.name.downcase.join("-")
+    slugified = self.name.downcase.gsub(/ /, "-")
 end
 
 def self.find_by_slug(slug)
-
-end
+    Artist.all.find {|artist|
+        artist.slug == slug
+    }
+    end
 
 end
