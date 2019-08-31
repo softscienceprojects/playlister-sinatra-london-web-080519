@@ -23,7 +23,10 @@ class SongsController < ApplicationController
         @song = Song.create(name: params["song"]["name"])
         
         if !params["song"]["artist"]["name"].empty?
-            @song.artist = Artist.create(name: params["song"]["artist"]["name"])
+            #find or create by
+            @song.artist = Artist.find_or_by_create(name: params["song"]["artist"]["name"]) 
+            #has to save genre
+            @song.genre = params["song"]["genre"]["name"]
         end
         @song.save
         redirect "/songs/#{@song.slug}"
@@ -31,8 +34,8 @@ class SongsController < ApplicationController
 
     #Edit
     get '/songs/:id/edit' do
-        @song = Song.find(params[:slug]) #####
-        erb :edit
+        @song = Song.find_by_slug(params[:slug]) #####
+        erb :'/songs/edit'
     end
 
     #Update
